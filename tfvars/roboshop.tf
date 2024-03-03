@@ -1,6 +1,6 @@
 resource "aws_instance" "servers" {
   for_each = var.instance_name
-  ami           = data.aws_ami.centos8
+  ami           = data.aws_ami.centos8.id
   instance_type = each.value
   
   tags = {
@@ -15,5 +15,5 @@ resource "aws_route53_record" "DNS" {
   name    = "${each.key}.${var.domain_name}"
   type    = "A"
   ttl     = 1
-  records = [startswith(each.key == "web") ? each.value.public_ip : each.value.private_ip]
+  records = [startswith("each.key", "web") ? each.value.public_ip : each.value.private_ip]
 }
